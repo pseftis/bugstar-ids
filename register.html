@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register - ScropIDS</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="auth.css">
+</head>
+<body>
+    <div class="background-effects">
+        <div class="glow glow-1"></div>
+        <div class="glow glow-2"></div>
+    </div>
+
+    <nav class="navbar">
+        <div class="container nav-container">
+            <a href="index.html" style="text-decoration: none; color: inherit;">
+                <div class="logo">
+                    <span class="logo-icon">🛡️</span>
+                    <span class="logo-text">ScropIDS</span>
+                </div>
+            </a>
+            <div class="nav-actions">
+                <a href="login.html" class="btn btn-secondary">Already have an account?</a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container auth-wrapper">
+        <div class="auth-card">
+            
+            <!-- Standard Registration Form -->
+            <div id="registerFormSection" class="fade-in">
+                <div class="auth-header">
+                    <h2>Create an Account</h2>
+                    <p>Start securing your multi-tenant environment today</p>
+                </div>
+                
+                <form id="registerForm">
+                    <div class="form-group">
+                        <label for="reg-name">Full Name</label>
+                        <input type="text" id="reg-name" class="form-control" placeholder="John Doe" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="reg-email">Work Email</label>
+                        <input type="email" id="reg-email" class="form-control" placeholder="john@company.com" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="reg-password">Password</label>
+                        <input type="password" id="reg-password" class="form-control" placeholder="••••••••" required>
+                    </div>
+                    
+                    <button type="submit" class="btn btn-primary btn-block">Create Account</button>
+                    
+                    <div class="auth-footer">
+                        By registering, you agree to our <a href="#">Terms of Service</a> and <a href="#">Privacy Policy</a>.
+                    </div>
+                </form>
+            </div>
+
+            <!-- OTP Verification Section -->
+            <div id="otpSection" class="otp-section">
+                <div class="auth-header">
+                    <h2>Verify Your Email</h2>
+                    <p>We've sent a 6-digit confirmation code to <br><strong id="otpEmailDisplay" class="gradient-text"></strong></p>
+                </div>
+
+                <div class="otp-inputs">
+                    <input type="text" maxlength="1" class="otp-input" autofocus>
+                    <input type="text" maxlength="1" class="otp-input">
+                    <input type="text" maxlength="1" class="otp-input">
+                    <input type="text" maxlength="1" class="otp-input">
+                    <input type="text" maxlength="1" class="otp-input">
+                    <input type="text" maxlength="1" class="otp-input">
+                </div>
+
+                <button id="verifyOtpBtn" class="btn btn-primary btn-block">Verify Email</button>
+
+                <div class="resend-timer">
+                    Resend code in <span id="timerText">00:30</span>
+                </div>
+                <button id="resendBtn" class="resend-btn">Resend OTP</button>
+                
+                <div class="auth-footer" style="margin-top: 1rem;">
+                    <a href="#" id="backToRegister" style="color: var(--text-muted);">← Update email address</a>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <script src="auth.js"></script>
+</body>
+</html>

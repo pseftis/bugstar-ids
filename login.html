@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - ScropIDS</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="auth.css">
+</head>
+<body>
+    <div class="background-effects">
+        <div class="glow glow-1"></div>
+        <div class="glow glow-2"></div>
+    </div>
+
+    <nav class="navbar">
+        <div class="container nav-container">
+            <a href="index.html" style="text-decoration: none; color: inherit;">
+                <div class="logo">
+                    <span class="logo-icon">🛡️</span>
+                    <span class="logo-text">ScropIDS</span>
+                </div>
+            </a>
+            <div class="nav-actions">
+                <a href="register.html" class="btn btn-secondary">Don't have an account?</a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container auth-wrapper">
+        <div class="auth-card">
+            
+            <!-- Standard Login Form -->
+            <div id="loginFormSection" class="fade-in">
+                <div class="auth-header">
+                    <h2>Welcome Back</h2>
+                    <p>Enter your credentials to access the platform</p>
+                </div>
+                
+                <form id="loginForm">
+                    <div class="form-group">
+                        <label for="email">Email Address</label>
+                        <input type="email" id="email" class="form-control" placeholder="admin@organization.com" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="password">Password</label>
+                        <input type="password" id="password" class="form-control" placeholder="••••••••" required>
+                    </div>
+                    <div style="text-align: right; margin-top: -10px;">
+                        <a href="#" style="color: var(--text-muted); font-size: 0.85rem; text-decoration: none;">Forgot password?</a>
+                    </div>
+                    
+                    <button type="submit" class="btn btn-primary btn-block">Sign In</button>
+                </form>
+            </div>
+
+            <!-- OTP Verification Section -->
+            <div id="otpSection" class="otp-section">
+                <div class="auth-header">
+                    <h2>2FA Verification</h2>
+                    <p>We've sent a 6-digit code to <br><strong id="otpEmailDisplay" class="gradient-text"></strong></p>
+                </div>
+
+                <div class="otp-inputs">
+                    <input type="text" maxlength="1" class="otp-input" autofocus>
+                    <input type="text" maxlength="1" class="otp-input">
+                    <input type="text" maxlength="1" class="otp-input">
+                    <input type="text" maxlength="1" class="otp-input">
+                    <input type="text" maxlength="1" class="otp-input">
+                    <input type="text" maxlength="1" class="otp-input">
+                </div>
+
+                <button id="verifyOtpBtn" class="btn btn-primary btn-block">Verify & Proceed</button>
+
+                <div class="resend-timer">
+                    Resend code in <span id="timerText">00:30</span>
+                </div>
+                <button id="resendBtn" class="resend-btn">Resend OTP</button>
+                
+                <div class="auth-footer" style="margin-top: 1rem;">
+                    <a href="#" id="backToLogin" style="color: var(--text-muted);">← Back to login</a>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <script src="auth.js"></script>
+</body>
+</html>

@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Customer Dashboard - ScropIDS</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="dashboard.css">
+</head>
+<body class="dashboard-body">
+    
+    <!-- Background Effects -->
+    <div class="background-effects">
+        <div class="glow glow-1" style="top: -10%; right: -5%; width: 400px; height: 400px; opacity: 0.1;"></div>
+    </div>
+
+    <!-- Sidebar -->
+    <aside class="sidebar">
+        <div class="logo">
+            <span class="logo-icon">🛡️</span>
+            <span class="logo-text">ScropIDS</span>
+        </div>
+        <ul class="sidebar-menu">
+            <li><a href="#" class="active">📊 Overview</a></li>
+            <li><a href="#">🌐 Protected Assets</a></li>
+            <li><a href="#">🚨 Alert Logs</a></li>
+            <li><a href="#">💼 Billing</a></li>
+            <li><a href="#">⚙️ Settings</a></li>
+        </ul>
+        <div class="sidebar-bottom">
+            <ul class="sidebar-menu">
+                <li><a href="index.html">🚪 Logout</a></li>
+            </ul>
+        </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <div class="dashboard-header">
+            <div class="header-title">
+                <h1>Customer Profile</h1>
+                <p>Welcome back! Your multi-tenant environment is fully secured.</p>
+            </div>
+            <div class="header-profile">
+                <div class="avatar">C</div>
+                <span>Company XYZ</span>
+            </div>
+        </div>
+
+        <!-- Metrics -->
+        <div class="dash-grid">
+            <div class="dash-card">
+                <div class="card-title">Threats Blocked (24h)</div>
+                <div class="card-value">1,402</div>
+                <div class="card-trend up">↑ 12% vs yesterday</div>
+            </div>
+            <div class="dash-card">
+                <div class="card-title">Active Security Nodes</div>
+                <div class="card-value">5 / 5</div>
+                <div class="card-trend up">All Systems Healthy</div>
+            </div>
+            <div class="dash-card">
+                <div class="card-title">Bandwidth Analyzed</div>
+                <div class="card-value">4.2 TB</div>
+            </div>
+        </div>
+
+        <!-- Alerts Panel -->
+        <div class="dash-panel">
+            <div class="panel-header">
+                <h3>Recent Network Alerts</h3>
+                <button class="btn btn-primary" style="padding: 0.5rem 1rem;">Export Logs</button>
+            </div>
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>Timestamp</th>
+                        <th>Event Type</th>
+                        <th>Target Node</th>
+                        <th>Status / Remediation</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>2026-04-14 14:22:10</td>
+                        <td>SQL Injection Payload</td>
+                        <td>db-cluster-01</td>
+                        <td><span class="status-badge status-danger">Blocked by LLM Triage</span></td>
+                    </tr>
+                    <tr>
+                        <td>2026-04-14 11:05:33</td>
+                        <td>Repeated Failed Logins</td>
+                        <td>admin-gateway</td>
+                        <td><span class="status-badge status-warning">IP Auto-Banned</span></td>
+                    </tr>
+                    <tr>
+                        <td>2026-04-13 19:40:01</td>
+                        <td>Malware Signature Match</td>
+                        <td>worker-node-03</td>
+                        <td><span class="status-badge status-danger">Quarantined</span></td>
+                    </tr>
+                    <tr>
+                        <td>2026-04-13 08:15:00</td>
+                        <td>Routine Log Aggregation</td>
+                        <td>All Nodes</td>
+                        <td><span class="status-badge status-success">Completed</span></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+    </main>
+
+</body>
+</html>

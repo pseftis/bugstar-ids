@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ScropIDS - Advanced Intrusion Detection System</title>
+    <meta name="description" content="ScropIDS is a multi-tenant cloud-native intrusion detection platform with scheduler-driven aggregation and LLM-assisted threat triage.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="background-effects">
+        <div class="glow glow-1"></div>
+        <div class="glow glow-2"></div>
+    </div>
+
+    <nav class="navbar">
+        <div class="container nav-container">
+            <div class="logo">
+                <span class="logo-icon">🛡️</span>
+                <span class="logo-text">ScropIDS</span>
+            </div>
+            <ul class="nav-links">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="#features">Features</a></li>
+                <li><a href="#services">Services</a></li>
+                <li><a href="#platform">Platform</a></li>
+            </ul>
+            <div class="nav-actions">
+                <a href="login.html" class="btn btn-secondary">Login</a>
+                <a href="register.html" class="btn btn-primary">Get Started</a>
+            </div>
+        </div>
+    </nav>
+
+    <header class="hero">
+        <div class="container hero-container">
+            <div class="hero-content">
+                <div class="badge">Next Generation Security</div>
+                <h1 class="hero-title">Intelligent Defense for <br><span class="gradient-text">Cloud-Native</span> Environments</h1>
+                <p class="hero-subtitle">ScropIDS is a multi-tenant cloud-native intrusion detection platform featuring scheduler-driven aggregation and LLM-assisted threat triage to detect, analyze, and neutralize advanced threats in real-time.</p>
+                <div class="hero-cta">
+                    <a href="register.html" class="btn btn-primary btn-large">Start Monitoring</a>
+                    <a href="#features" class="btn btn-secondary btn-large">View Demo</a>
+                </div>
+                <div class="stats">
+                    <div class="stat-item">
+                        <span class="stat-value">99.9%</span>
+                        <span class="stat-label">Threat Detection Rate</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-value">< 5ms</span>
+                        <span class="stat-label">Analysis Latency</span>
+                    </div>
+                </div>
+            </div>
+            <div class="hero-visual">
+                <div class="glass-panel dashboard-preview">
+                    <div class="panel-header">
+                        <div class="dots">
+                            <span></span><span></span><span></span>
+                        </div>
+                        <div class="panel-title">System Status: Active Monitoring</div>
+                    </div>
+                    <div class="panel-body">
+                        <div class="threat-alert scanning" id="threat-alert">
+                            <div class="alert-icon">⚡</div>
+                            <div class="alert-info">
+                                <strong>Network Scan in Progress...</strong>
+                                <span>Analyzing incoming traffic patterns</span>
+                            </div>
+                            <div class="alert-status">Processing</div>
+                        </div>
+                        
+                        <div class="metrics-grid">
+                            <div class="metric-card">
+                                <span class="metric-title">Packets Analyzed</span>
+                                <span class="metric-number">2,459,102</span>
+                                <div class="mini-chart chart-blue"></div>
+                            </div>
+                            <div class="metric-card alert">
+                                <span class="metric-title">Anomalies Detected</span>
+                                <span class="metric-number">14</span>
+                                <div class="mini-chart chart-red"></div>
+                            </div>
+                        </div>
+                        
+                        <div class="log-stream" id="log-stream">
+                            <div class="log-entry">[SYS] Scheduler-driven aggregation started</div>
+                            <div class="log-entry">[NET] Multi-tenant isolation verified</div>
+                            <div class="log-entry warn">[WARN] Unusual outbound connection detected on Port 443</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <section id="features" class="features">
+        <div class="container">
+            <h2 class="section-title">Core <span class="gradient-text">Capabilities</span></h2>
+            <div class="features-grid">
+                
+                <div class="feature-card">
+                    <div class="feature-icon">🧠</div>
+                    <h3 class="feature-title">LLM-Assisted Triage</h3>
+                    <p class="feature-desc">Leverage advanced Large Language Models to automatically triage and summarize complex threat vectors, reducing alert fatigue.</p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">⏱️</div>
+                    <h3 class="feature-title">Scheduler-Driven Aggregation</h3>
+                    <p class="feature-desc">Efficiently collect and analyze distributed logs and network flows with our intelligent, scheduler-based data aggregation engine.</p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">☁️</div>
+                    <h3 class="feature-title">Multi-Tenant Cloud Native</h3>
+                    <p class="feature-desc">Designed from the ground up for the cloud, ensuring complete data isolation and scalability across multiple concurrent tenants.</p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">🔐</div>
+                    <h3 class="feature-title">Real-time Prevention</h3>
+                    <p class="feature-desc">Not just detection. ScropIDS integrates directly with your firewall and network policies to instantly block malicious actors.</p>
+                </div>
+                
+            </div>
+        </div>
+    </section>
+
+    <section id="services" class="services section-padding">
+        <div class="container">
+            <div class="section-header">
+                <span class="badge">What We Offer</span>
+                <h2 class="section-title">Professional <span class="gradient-text">Security Services</span></h2>
+                <p class="section-subtitle">Beyond our powerful cloud platform, our team of seasoned security researchers provides end-to-end services to keep your organization impenetrable.</p>
+            </div>
+            
+            <div class="services-wrapper">
+                <div class="service-row">
+                    <div class="service-content">
+                        <h3>24/7 Managed Threat Monitoring</h3>
+                        <p>Our global Security Operations Center (SOC) integrates seamlessly with your ScropIDS deployment to provide round-the-clock eyes on your network. We instantly categorize threats using LLM triage and neutralize them before they impact your business.</p>
+                        <ul class="service-list">
+                            <li>✔️ Real-time incident alert escalation</li>
+                            <li>✔️ Dedicated security analysts</li>
+                            <li>✔️ Continuous log aggregation</li>
+                        </ul>
+                        
+                        <div class="interactive-demo">
+                            <h4>Try the LLM Triage Engine</h4>
+                            <div class="input-group">
+                                <input type="text" id="demo-log-input" placeholder="Paste a log line (e.g. GET /admin/login HTTP/1.1)">
+                                <button id="demo-analyze-btn" class="btn btn-primary" style="padding: 0.5rem 1rem;">Analyze</button>
+                            </div>
+                            <div id="demo-analyze-result" class="demo-result"></div>
+                        </div>
+                    </div>
+                    <div class="service-visual glass-panel">
+                        <div class="radar-animation">
+                            <div class="radar-sweep"></div>
+                            <div class="radar-dot dot-1"></div>
+                            <div class="radar-dot dot-2"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="service-row reverse">
+                    <div class="service-content">
+                        <h3>Vulnerability & Penetration Testing</h3>
+                        <p>We don't just wait for attacks—we simulate them. Our offensive security team conducts deep-dive penetration tests across your cloud infrastructure and web applications, feeding the findings back into your ScropIDS ruleset for customized defense.</p>
+                        <ul class="service-list">
+                            <li>✔️ Zero-day exposure modeling</li>
+                            <li>✔️ Web Application Firewall (WAF) tuning</li>
+                            <li>✔️ Comprehensive executive reporting</li>
+                        </ul>
+                        
+                        <div class="interactive-demo">
+                            <h4>Run a Quick Vulnerability Scan</h4>
+                            <div class="input-group">
+                                <input type="text" id="demo-scan-input" placeholder="Target Domain (e.g. localhost)">
+                                <button id="demo-scan-btn" class="btn btn-primary" style="padding: 0.5rem 1rem;">Start Scan</button>
+                            </div>
+                            <div id="demo-scan-result" class="demo-result"></div>
+                        </div>
+                    </div>
+                    <div class="service-visual glass-panel">
+                        <div class="code-animation">
+                            <span>> Analyzing external attack surface...</span>
+                            <span>> Exploiting CVE-2024-X... <span style="color:#ff5f56">[ACCESS DENIED]</span></span>
+                            <span><span style="color:#27c93f">> ScropIDS defense mechanism verified.</span></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="footer">
+        <div class="container footer-content">
+            <div class="footer-logo">
+                <span class="logo-icon">🛡️</span>
+                <span class="logo-text">ScropIDS</span>
+            </div>
+            <p class="footer-text">&copy; 2026 ScropIDS Platform. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>

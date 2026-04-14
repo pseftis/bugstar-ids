@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard - ScropIDS</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="dashboard.css">
+</head>
+<body class="dashboard-body">
+    
+    <!-- Background Effects -->
+    <div class="background-effects">
+        <div class="glow glow-1" style="top: -10%; left: 10%; width: 500px; height: 500px; opacity: 0.15; background: radial-gradient(circle, #f9d423, transparent);"></div>
+    </div>
+
+    <!-- Sidebar -->
+    <aside class="sidebar">
+        <div class="logo">
+            <span class="logo-icon">🛡️</span>
+            <span class="logo-text">ScropIDS <span style="font-size:0.6em; color:var(--accent-secondary)">ADMIN</span></span>
+        </div>
+        <ul class="sidebar-menu">
+            <li><a href="#" class="active">🎛️ Command Center</a></li>
+            <li><a href="#">🏢 Tenant Management</a></li>
+            <li><a href="#">🧠 LLM Engine Rules</a></li>
+            <li><a href="#">📈 Platform Analytics</a></li>
+            <li><a href="#">👨‍💻 Server Health</a></li>
+        </ul>
+        <div class="sidebar-bottom">
+            <ul class="sidebar-menu">
+                <li><a href="index.html">🚪 Logout</a></li>
+            </ul>
+        </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <div class="dashboard-header">
+            <div class="header-title">
+                <h1>Administrator Console</h1>
+                <p>Global oversight of the ScropIDS platform and tenant nodes.</p>
+            </div>
+            <div class="header-profile" style="border-color: var(--accent-secondary)">
+                <div class="avatar" style="background: var(--accent-secondary)">A</div>
+                <span>Super Admin</span>
+            </div>
+        </div>
+
+        <!-- Admin Metrics -->
+        <div class="dash-grid">
+            <div class="dash-card admin-card">
+                <div class="card-title">Active Cloud Tenants</div>
+                <div class="card-value">254</div>
+                <div class="card-trend up">+3 new today</div>
+            </div>
+            <div class="dash-card admin-card">
+                <div class="card-title">LLM Triage Computations</div>
+                <div class="card-value">1.8M / hr</div>
+                <div class="card-trend up">Avg latency: 4.2ms</div>
+            </div>
+            <div class="dash-card admin-card">
+                <div class="card-title">Global Server Load</div>
+                <div class="card-value">42%</div>
+                <div class="card-trend down">Scheduler aggregation running efficiently</div>
+            </div>
+        </div>
+
+        <!-- Tenant Panel -->
+        <div class="dash-panel">
+            <div class="panel-header">
+                <h3>Multi-Tenant Organization Status</h3>
+                <button class="btn btn-secondary" style="padding: 0.5rem 1rem;">View All Organizations</button>
+            </div>
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>Organization Name</th>
+                        <th>Plan</th>
+                        <th>Nodes</th>
+                        <th>Last Global Alert</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Company XYZ</td>
+                        <td>Enterprise 🌟</td>
+                        <td>5</td>
+                        <td>10 mins ago (SQLi Blocked)</td>
+                        <td><span class="status-badge status-success">Healthy</span></td>
+                    </tr>
+                    <tr>
+                        <td>Alpha Corp</td>
+                        <td>Standard</td>
+                        <td>12</td>
+                        <td>2 hours ago (DDoS Mitigation)</td>
+                        <td><span class="status-badge status-success">Healthy</span></td>
+                    </tr>
+                    <tr>
+                        <td>Zeta Solutions</td>
+                        <td>Free Tier</td>
+                        <td>1</td>
+                        <td>1 min ago (High Load)</td>
+                        <td><span class="status-badge status-warning">Warning</span></td>
+                    </tr>
+                    <tr>
+                        <td>Gamma Industries</td>
+                        <td>Enterprise 🌟</td>
+                        <td>45</td>
+                        <td>None</td>
+                        <td><span class="status-badge status-danger">Payment Overdue</span></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+    </main>
+
+</body>
+</html>
