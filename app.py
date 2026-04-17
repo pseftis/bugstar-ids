@@ -37,6 +37,9 @@ def init_db():
     conn.commit()
     conn.close()
 
+# Initialize DB on module load so Gunicorn runs it
+init_db()
+
 def send_otp_email(receiver_email, otp_code, purpose="Authentication"):
     if not SMTP_PASS:
         print(f"\n[ERROR] Could not send email to {receiver_email}.")
