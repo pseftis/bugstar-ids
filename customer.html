@@ -7,10 +7,22 @@
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="dashboard.css">
+    <style>
+        .page-section { display: none; animation: fadeIn 0.4s ease-out; }
+        .page-section.active { display: block; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        
+        .quiz-card { background: rgba(0,0,0,0.2); border-radius: 8px; padding: 1.5rem; border: 1px solid rgba(255,255,255,0.05); }
+        .quiz-progress { height: 6px; background: rgba(255,255,255,0.1); border-radius: 4px; margin-bottom: 1.5rem; overflow: hidden; }
+        .quiz-fill { height: 100%; background: var(--accent); width: 0%; transition: width 0.3s ease; }
+        .quiz-option { text-align: left; padding: 0.8rem 1rem; border-radius: 6px; background: rgba(255,255,255,0.05); border: 1px solid transparent; color: white; cursor: pointer; transition: all 0.2s; font-family: inherit; font-size: 0.9rem; margin-bottom: 0.5rem; width: 100%; }
+        .quiz-option:hover { background: rgba(255,255,255,0.1); border-color: rgba(255,255,255,0.2); }
+        .quiz-option.correct { background: rgba(39, 201, 63, 0.2); border-color: #27c93f; }
+        .quiz-option.wrong { background: rgba(248, 54, 0, 0.2); border-color: #f83600; }
+    </style>
 </head>
 <body class="dashboard-body">
     
-    <!-- Background Effects -->
     <div class="background-effects">
         <div class="glow glow-1" style="top: -10%; right: -5%; width: 400px; height: 400px; opacity: 0.1;"></div>
     </div>
@@ -22,11 +34,11 @@
             <span class="logo-text">ScropIDS</span>
         </div>
         <ul class="sidebar-menu">
-            <li><a href="#" class="active">📊 Overview</a></li>
-            <li><a href="#">🌐 Protected Assets</a></li>
-            <li><a href="#">🚨 Alert Logs</a></li>
-            <li><a href="#">💼 Billing</a></li>
-            <li><a href="#">⚙️ Settings</a></li>
+            <li><a href="#" class="nav-link active" data-target="overview-section">📊 Overview</a></li>
+            <li><a href="#" class="nav-link" data-target="tools-section">🧰 Security Tools</a></li>
+            <li><a href="#" class="nav-link" data-target="logs-section">🚨 Alert Logs</a></li>
+            <li><a href="#" class="nav-link" data-target="billing-section">💼 Billing</a></li>
+            <li><a href="#" class="nav-link" data-target="settings-section">⚙️ Settings</a></li>
         </ul>
         <div class="sidebar-bottom">
             <ul class="sidebar-menu">
@@ -35,7 +47,6 @@
         </div>
     </aside>
 
-    <!-- Main Content -->
     <main class="main-content">
         <div class="dashboard-header">
             <div class="header-title">
@@ -48,100 +59,151 @@
             </div>
         </div>
 
-        <!-- Metrics -->
-        <div class="dash-grid">
-            <div class="dash-card">
-                <div class="card-title">Threats Blocked (24h)</div>
-                <div class="card-value">1,402</div>
-                <div class="card-trend up">↑ 12% vs yesterday</div>
+        <!-- 1. OVERVIEW SECTION -->
+        <div id="overview-section" class="page-section active">
+            <div class="dash-grid">
+                <div class="dash-card">
+                    <div class="card-title">Threats Blocked (24h)</div>
+                    <div class="card-value">1,402</div>
+                    <div class="card-trend up">↑ 12% vs yesterday</div>
+                </div>
+                <div class="dash-card">
+                    <div class="card-title">Active Security Nodes</div>
+                    <div class="card-value">5 / 5</div>
+                    <div class="card-trend up">All Systems Healthy</div>
+                </div>
+                <div class="dash-card">
+                    <div class="card-title">Bandwidth Analyzed</div>
+                    <div class="card-value">4.2 TB</div>
+                </div>
             </div>
-            <div class="dash-card">
-                <div class="card-title">Active Security Nodes</div>
-                <div class="card-value">5 / 5</div>
-                <div class="card-trend up">All Systems Healthy</div>
-            </div>
-            <div class="dash-card">
-                <div class="card-title">Bandwidth Analyzed</div>
-                <div class="card-value">4.2 TB</div>
+
+            <div class="dash-grid" style="grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-top: 2rem;">
+                <div class="dash-card">
+                    <div class="card-title" style="margin-bottom: 1rem;">Welcome to ScropIDS</div>
+                    <p style="color: #a1a1aa; line-height: 1.6;">Your cloud-native infrastructure is now seamlessly connected to our zero-trust LLM firewall. Navigate using the sidebar to view logs, check billing, or try out interactive tools.</p>
+                    <button class="btn btn-secondary" onclick="document.querySelector('.nav-link[data-target=\'tools-section\']').click()" style="margin-top: 1rem;">Try Security Tools &rarr;</button>
+                </div>
+                
+                <!-- Interactive Quiz -->
+                <div class="dash-card" style="position: relative;">
+                    <div class="card-title" style="margin-bottom: 1rem;">Interactive Security Quiz 🏆</div>
+                    <div class="quiz-card" id="quiz-box">
+                        <div style="display:flex; justify-content:space-between; font-size:0.8rem; margin-bottom:0.5rem; color:#a1a1aa;">
+                            <span>Question <span id="q-curr">1</span>/3</span>
+                            <span id="q-score">Score: 0</span>
+                        </div>
+                        <div class="quiz-progress"><div class="quiz-fill" id="quiz-progress-bar" style="width: 33%"></div></div>
+                        <h4 id="quiz-question" style="margin-bottom: 1rem;">...</h4>
+                        <div id="quiz-options" style="display: flex; flex-direction: column;"></div>
+                        <div id="quiz-feedback" style="margin-top: 1rem; font-size: 0.9rem; font-weight: 500; min-height: 20px;"></div>
+                    </div>
+                </div>
             </div>
         </div>
 
-        <!-- Alerts Panel -->
-        <div class="dash-panel">
-            <div class="panel-header">
-                <h3>Recent Network Alerts</h3>
-                <button id="exportLogsBtn" class="btn btn-primary" style="padding: 0.5rem 1rem;">Export Logs</button>
-            </div>
-            <table class="data-table">
-                <thead>
-                    <tr>
-                        <th>Timestamp</th>
-                        <th>Event Type</th>
-                        <th>Target Node</th>
-                        <th>Status / Remediation</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>2026-04-14 14:22:10</td>
-                        <td>SQL Injection Payload</td>
-                        <td>db-cluster-01</td>
-                        <td><span class="status-badge status-danger">Blocked by LLM Triage</span></td>
-                    </tr>
-                    <tr>
-                        <td>2026-04-14 11:05:33</td>
-                        <td>Repeated Failed Logins</td>
-                        <td>admin-gateway</td>
-                        <td><span class="status-badge status-warning">IP Auto-Banned</span></td>
-                    </tr>
-                    <tr>
-                        <td>2026-04-13 19:40:01</td>
-                        <td>Malware Signature Match</td>
-                        <td>worker-node-03</td>
-                        <td><span class="status-badge status-danger">Quarantined</span></td>
-                    </tr>
-                    <tr>
-                        <td>2026-04-13 08:15:00</td>
-                        <td>Routine Log Aggregation</td>
-                        <td>All Nodes</td>
-                        <td><span class="status-badge status-success">Completed</span></td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-
-        <!-- Security Tools Panel -->
-        <div class="dash-panel" style="margin-top: 2rem;">
-            <div class="panel-header">
-                <h3>Customer Security Tools</h3>
-            </div>
-            
-            <div class="dash-grid" style="grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-top: 1rem;">
+        <!-- 2. SECURITY TOOLS SECTION -->
+        <div id="tools-section" class="page-section">
+            <h2 style="margin-bottom: 1.5rem;">Interactive Security Tools</h2>
+            <div class="dash-grid" style="grid-template-columns: 1fr 1fr; gap: 1.5rem;">
+                
                 <!-- Log Verifier -->
                 <div class="dash-card">
                     <div class="card-title" style="margin-bottom: 1rem;">LLM Log Verifier</div>
                     <p style="font-size: 0.9rem; color: #a1a1aa; margin-bottom: 1rem;">Verify if a specific log signature is malicious using our advanced LLM triage engine.</p>
                     <div class="input-group" style="display: flex; gap: 0.5rem; margin-bottom: 1rem;">
                         <input type="text" id="verify-log-input" placeholder="Paste log (e.g. DROP TABLE users)" style="flex: 1; padding: 0.5rem; border-radius: 4px; border: 1px solid rgba(255,255,255,0.1); background: rgba(0,0,0,0.3); color: white;">
-                        <button id="verify-log-btn" class="btn btn-primary" style="padding: 0.5rem 1rem;">Verify</button>
+                        <button id="verify-log-btn" class="btn btn-primary" style="padding: 0.5rem 1rem;">Analyze</button>
                     </div>
                     <div id="verify-log-result" style="padding: 0.8rem; border-radius: 4px; background: rgba(0,0,0,0.2); font-size: 0.9rem; min-height: 40px; border: 1px solid rgba(255,255,255,0.05);">Waiting for input...</div>
                 </div>
 
-                <!-- Platform Quiz -->
+                <!-- Port Scanner -->
                 <div class="dash-card">
-                    <div class="card-title" style="margin-bottom: 1rem;">ScropIDS Training Quiz</div>
-                    <p style="font-size: 0.9rem; color: #a1a1aa; margin-bottom: 1rem;">Test your knowledge on how our cloud-native intrusion detection system protects you.</p>
-                    
-                    <div id="quiz-container">
-                        <p id="quiz-question" style="font-weight: 500; margin-bottom: 1rem;">What technology do we use to instantly triage and summarize complex threat vectors?</p>
-                        <div style="display: flex; flex-direction: column; gap: 0.5rem; margin-bottom: 1rem;">
-                            <button class="btn btn-secondary quiz-btn" onclick="checkQuiz(false)" style="text-align: left; background: rgba(255,255,255,0.05); border-color: transparent;">A. Basic Regular Expressions (Regex)</button>
-                            <button class="btn btn-secondary quiz-btn" onclick="checkQuiz(true)" style="text-align: left; background: rgba(255,255,255,0.05); border-color: transparent;">B. LLM-Assisted Triage Engine</button>
-                            <button class="btn btn-secondary quiz-btn" onclick="checkQuiz(false)" style="text-align: left; background: rgba(255,255,255,0.05); border-color: transparent;">C. Manual human review only</button>
-                        </div>
-                        <div id="quiz-result" style="font-size: 0.9rem; font-weight: bold; min-height: 20px;"></div>
+                    <div class="card-title" style="margin-bottom: 1rem;">Network Port Scanner</div>
+                    <p style="font-size: 0.9rem; color: #a1a1aa; margin-bottom: 1rem;">Scan your external IP addresses or domains for exposed vulnerable ports.</p>
+                    <div class="input-group" style="display: flex; gap: 0.5rem; margin-bottom: 1rem;">
+                        <input type="text" id="scan-input" placeholder="Domain or IP (e.g. 127.0.0.1)" style="flex: 1; padding: 0.5rem; border-radius: 4px; border: 1px solid rgba(255,255,255,0.1); background: rgba(0,0,0,0.3); color: white;">
+                        <button id="scan-btn" class="btn btn-secondary" style="padding: 0.5rem 1rem;">Scan</button>
                     </div>
+                    <div id="scan-result" style="padding: 0.8rem; border-radius: 4px; background: rgba(0,0,0,0.2); font-size: 0.9rem; min-height: 40px; border: 1px solid rgba(255,255,255,0.05); display: flex; flex-direction: column; gap: 0.3rem;">Enter a target to scan...</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 3. LOGS SECTION -->
+        <div id="logs-section" class="page-section">
+            <div class="dash-panel">
+                <div class="panel-header">
+                    <h3>Detailed Network Alerts</h3>
+                    <button id="exportLogsBtn" class="btn btn-primary" style="padding: 0.5rem 1rem;">📥 Export CSV</button>
+                </div>
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Timestamp</th>
+                            <th>Event Type</th>
+                            <th>Target Node</th>
+                            <th>Status / Remediation</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>2026-04-14 14:22:10</td><td>SQL Injection Payload</td><td>db-cluster-01</td><td><span class="status-badge status-danger">Blocked by LLM Triage</span></td></tr>
+                        <tr><td>2026-04-14 11:05:33</td><td>Repeated Failed Logins</td><td>admin-gateway</td><td><span class="status-badge status-warning">IP Auto-Banned</span></td></tr>
+                        <tr><td>2026-04-13 19:40:01</td><td>Malware Signature Match</td><td>worker-node-03</td><td><span class="status-badge status-danger">Quarantined</span></td></tr>
+                        <tr><td>2026-04-13 08:15:00</td><td>Routine Log Aggregation</td><td>All Nodes</td><td><span class="status-badge status-success">Completed</span></td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- 4. BILLING SECTION -->
+        <div id="billing-section" class="page-section">
+            <div class="dash-panel">
+                <div class="panel-header">
+                    <h3>Billing & Subscription</h3>
+                </div>
+                <div style="padding: 2rem 0; text-align: center;">
+                    <h2 style="margin-bottom: 0.5rem;">Enterprise Tier 🌟</h2>
+                    <p style="color: #a1a1aa; margin-bottom: 2rem;">Your account is fully active and billed automatically.</p>
+                    
+                    <div style="display: flex; justify-content: center; gap: 2rem; margin-bottom: 2rem;">
+                        <div style="text-align: left; background: rgba(0,0,0,0.2); padding: 1.5rem; border-radius: 8px; border: 1px solid rgba(255,255,255,0.05); width: 300px;">
+                            <span style="color: #a1a1aa; font-size: 0.8rem; text-transform: uppercase;">Current Balance</span>
+                            <div style="font-size: 2rem; font-weight: bold; margin: 0.5rem 0;">$0.00</div>
+                            <span style="color: #27c93f; font-size: 0.9rem;">Paid up-to-date</span>
+                        </div>
+                        <div style="text-align: left; background: rgba(0,0,0,0.2); padding: 1.5rem; border-radius: 8px; border: 1px solid rgba(255,255,255,0.05); width: 300px;">
+                            <span style="color: #a1a1aa; font-size: 0.8rem; text-transform: uppercase;">Next Invoice</span>
+                            <div style="font-size: 2rem; font-weight: bold; margin: 0.5rem 0;">$499.00</div>
+                            <span style="font-size: 0.9rem;">Due May 1, 2026</span>
+                        </div>
+                    </div>
+                    <button class="btn btn-secondary">Update Payment Method</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- 5. SETTINGS SECTION -->
+        <div id="settings-section" class="page-section">
+            <div class="dash-panel">
+                <div class="panel-header">
+                    <h3>Account Settings</h3>
+                </div>
+                <div style="padding: 1rem 0;">
+                    <div style="margin-bottom: 1.5rem;">
+                        <label style="display: block; margin-bottom: 0.5rem; color: #a1a1aa;">Email Address</label>
+                        <input type="text" value="admin@companyxyz.com" disabled style="width: 100%; max-width: 400px; padding: 0.5rem; border-radius: 4px; border: 1px solid rgba(255,255,255,0.1); background: rgba(0,0,0,0.3); color: #666;">
+                    </div>
+                    <div style="margin-bottom: 1.5rem;">
+                        <label style="display: block; margin-bottom: 0.5rem; color: #a1a1aa;">Email Notifications</label>
+                        <select style="width: 100%; max-width: 400px; padding: 0.5rem; border-radius: 4px; border: 1px solid rgba(255,255,255,0.1); background: rgba(0,0,0,0.3); color: white;">
+                            <option>Critical Alerts Only</option>
+                            <option>All Alerts</option>
+                            <option>No Emails</option>
+                        </select>
+                    </div>
+                    <button class="btn btn-primary">Save Changes</button>
                 </div>
             </div>
         </div>
@@ -149,72 +211,197 @@
     </main>
 
     <script>
-        // Log Exporter Logic
+        // -- NAVIGATION LOGIC --
+        const links = document.querySelectorAll('.nav-link');
+        const sections = document.querySelectorAll('.page-section');
+        
+        links.forEach(link => {
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+                const targetId = link.getAttribute('data-target');
+                
+                // Update active link visually
+                links.forEach(l => l.classList.remove('active'));
+                link.classList.add('active');
+                
+                // Show target section, hide others
+                sections.forEach(sec => {
+                    if(sec.id === targetId) sec.classList.add('active');
+                    else sec.classList.remove('active');
+                });
+            });
+        });
+
+        // -- LOG EXPORTER --
         document.getElementById('exportLogsBtn').addEventListener('click', () => {
             const table = document.querySelector('.data-table');
             let csvContent = "data:text/csv;charset=utf-8,";
-            
-            // Get headers
             const headers = Array.from(table.querySelectorAll('th')).map(th => th.innerText);
             csvContent += headers.join(",") + "\\n";
-            
-            // Get rows
             const rows = Array.from(table.querySelectorAll('tbody tr')).map(tr => {
                 return Array.from(tr.querySelectorAll('td')).map(td => td.innerText.replace(/,/g, "")).join(",");
             });
             csvContent += rows.join("\\n");
-            
-            // Download as CSV
-            const encodedUri = encodeURI(csvContent);
             const link = document.createElement("a");
-            link.setAttribute("href", encodedUri);
+            link.setAttribute("href", encodeURI(csvContent));
             link.setAttribute("download", "scropids_alerts_export.csv");
-            document.body.appendChild(link); // Required for Firefox
+            document.body.appendChild(link);
             link.click();
             document.body.removeChild(link);
         });
 
-        // Log Verifier Logic
+        // -- LLM LOG VERIFIER --
         document.getElementById('verify-log-btn').addEventListener('click', async () => {
             const input = document.getElementById('verify-log-input').value;
             const resultDiv = document.getElementById('verify-log-result');
+            if(!input) { resultDiv.innerHTML = '<span style="color:red">Please enter a log line.</span>'; return; }
             
-            if(!input) {
-                resultDiv.innerHTML = '<span style="color:red">Please enter a log line to analyze.</span>';
-                return;
-            }
-            
-            resultDiv.innerHTML = '<span style="color:#ffbd2e">Analyzing with LLM Engine...</span>';
-            
+            resultDiv.innerHTML = '<span style="color:#ffbd2e">Analyzing with LLM...</span>';
             try {
                 const response = await fetch('/api/analyze', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ log: input })
                 });
-                
                 if(response.ok) {
                     const data = await response.json();
                     resultDiv.innerHTML = `<strong style="color: ${data.color}">[${data.threat_level}]</strong> ${data.analysis}`;
-                } else {
-                    resultDiv.innerHTML = '<span style="color:red">Analysis failed. Could not reach server.</span>';
-                }
+                } else resultDiv.innerHTML = '<span style="color:red">Analysis failed. Server error.</span>';
             } catch (err) {
-                resultDiv.innerHTML = '<span style="color:red">Network error. Is proxy configured properly?</span>';
+                resultDiv.innerHTML = '<span style="color:red">Network error.</span>';
             }
         });
 
-        // Quiz Logic
-        function checkQuiz(isCorrect) {
-            const result = document.getElementById('quiz-result');
-            if(isCorrect) {
-                result.style.color = '#27c93f';
-                result.innerText = '✅ Correct! We utilize advanced Large Language Models to triage threats efficiently.';
-            } else {
-                result.style.color = '#f83600';
-                result.innerText = '❌ Incorrect. Hint: We use modern AI assistance!';
+        // -- PORT SCANNER --
+        document.getElementById('scan-btn').addEventListener('click', async () => {
+            const input = document.getElementById('scan-input').value || '127.0.0.1';
+            const resultDiv = document.getElementById('scan-result');
+            
+            resultDiv.innerHTML = '<span style="color:#ffbd2e">Scanning top ports... This may take a few seconds.</span>';
+            try {
+                const response = await fetch('/api/scan', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ target: input })
+                });
+                if(response.ok) {
+                    const data = await response.json();
+                    resultDiv.innerHTML = `<div style="font-weight:bold; margin-bottom:5px;">Target: ${data.target}</div>`;
+                    data.results.forEach(r => {
+                        resultDiv.innerHTML += `<div>Port ${r.port}: <span style="color:${r.color}">${r.status}</span></div>`;
+                    });
+                } else resultDiv.innerHTML = '<span style="color:red">Scan failed. Invalid target.</span>';
+            } catch (err) {
+                resultDiv.innerHTML = '<span style="color:red">Network error.</span>';
             }
+        });
+
+        // -- INTERACTIVE QUIZ --
+        const quizData = [
+            {
+                q: "What component is responsible for collecting data across isolation boundaries?",
+                opts: ["A. LLM Engine", "B. Scheduler-Driven Aggregation", "C. Email Gateway"],
+                correct: 1,
+                reason: "Scheduler-Driven Aggregation automatically pulls logs from multi-tenant nodes over scheduled intervals!"
+            },
+            {
+                q: "How does ScropIDS automatically handle malicious external IPs?",
+                opts: ["A. Prints a warning", "B. Emails the attacker", "C. Integrates with firewall for blocks"],
+                correct: 2,
+                reason: "ScropIDS interfaces with network policies to perform real-time quarantine and blocking."
+            },
+            {
+                q: "What authentication method secures your Tenant access in ScropIDS?",
+                opts: ["A. Cryptographic Email OTPs", "B. Basic Base64 passwords", "C. No authentication needed"],
+                correct: 0,
+                reason: "You log in securely using a 6-digit Time-Based cryptographic OTP sent directly to your verified email."
+            }
+        ];
+        
+        let currentQ = 0;
+        let score = 0;
+        
+        function renderQuiz() {
+            if(currentQ >= quizData.length) {
+                document.getElementById('quiz-box').innerHTML = `
+                    <div style="text-align:center; padding: 2rem 0;">
+                        <span style="font-size:3rem; margin-bottom: 1rem; display:block;">🎉</span>
+                        <h3 style="margin-bottom: 0.5rem; color: #27c93f;">Quiz Completed!</h3>
+                        <p>You scored ${score} out of ${quizData.length}. You're a ScropIDS expert.</p>
+                        <button class="btn btn-secondary" onclick="resetQuiz()" style="margin-top:1.5rem;">Retake Quiz</button>
+                    </div>`;
+                return;
+            }
+            
+            const q = quizData[currentQ];
+            document.getElementById('q-curr').innerText = currentQ + 1;
+            document.getElementById('q-score').innerText = `Score: ${score}`;
+            document.getElementById('quiz-progress-bar').style.width = `${((currentQ)/quizData.length)*100}%`;
+            document.getElementById('quiz-question').innerText = q.q;
+            document.getElementById('quiz-feedback').innerHTML = '';
+            
+            const optsContainer = document.getElementById('quiz-options');
+            optsContainer.innerHTML = '';
+            
+            q.opts.forEach((optText, index) => {
+                const btn = document.createElement('button');
+                btn.className = 'quiz-option';
+                btn.innerText = optText;
+                btn.onclick = () => handleAnswer(index, btn);
+                optsContainer.appendChild(btn);
+            });
         }
+        
+        function handleAnswer(selectedIndex, btnElement) {
+            const q = quizData[currentQ];
+            const isCorrect = (selectedIndex === q.correct);
+            const feedback = document.getElementById('quiz-feedback');
+            
+            // Disable all buttons
+            document.querySelectorAll('.quiz-option').forEach(b => {
+                b.disabled = true;
+                b.style.opacity = '0.5';
+                b.style.cursor = 'default';
+            });
+            
+            btnElement.style.opacity = '1';
+            
+            if(isCorrect) {
+                score++;
+                btnElement.classList.add('correct');
+                feedback.innerHTML = `<span style="color:#27c93f">✅ Correct!</span><br><span style="color:#a1a1aa; font-weight:normal; font-size:0.85em;">${q.reason}</span>`;
+            } else {
+                btnElement.classList.add('wrong');
+                document.querySelectorAll('.quiz-option')[q.correct].style.opacity = '1';
+                document.querySelectorAll('.quiz-option')[q.correct].classList.add('correct');
+                feedback.innerHTML = `<span style="color:#f83600">❌ Incorrect!</span><br><span style="color:#a1a1aa; font-weight:normal; font-size:0.85em;">${q.reason}</span>`;
+            }
+            
+            setTimeout(() => {
+                currentQ++;
+                renderQuiz();
+            }, 3000);
+        }
+        
+        function resetQuiz() {
+            currentQ = 0; score = 0;
+            const container = document.getElementById('quiz-box');
+            container.innerHTML = `
+                <div style="display:flex; justify-content:space-between; font-size:0.8rem; margin-bottom:0.5rem; color:#a1a1aa;">
+                    <span>Question <span id="q-curr">1</span>/3</span>
+                    <span id="q-score">Score: 0</span>
+                </div>
+                <div class="quiz-progress"><div class="quiz-fill" id="quiz-progress-bar" style="width: 33%"></div></div>
+                <h4 id="quiz-question" style="margin-bottom: 1rem;">...</h4>
+                <div id="quiz-options" style="display: flex; flex-direction: column;"></div>
+                <div id="quiz-feedback" style="margin-top: 1rem; font-size: 0.9rem; font-weight: 500; min-height: 20px;"></div>
+            `;
+            renderQuiz();
+        }
+        
+        // Init quiz
+        renderQuiz();
+
     </script>
 </body>
 </html>
