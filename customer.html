@@ -70,7 +70,7 @@
         <div class="dash-panel">
             <div class="panel-header">
                 <h3>Recent Network Alerts</h3>
-                <button class="btn btn-primary" style="padding: 0.5rem 1rem;">Export Logs</button>
+                <button id="exportLogsBtn" class="btn btn-primary" style="padding: 0.5rem 1rem;">Export Logs</button>
             </div>
             <table class="data-table">
                 <thead>
@@ -110,7 +110,111 @@
             </table>
         </div>
 
+        <!-- Security Tools Panel -->
+        <div class="dash-panel" style="margin-top: 2rem;">
+            <div class="panel-header">
+                <h3>Customer Security Tools</h3>
+            </div>
+            
+            <div class="dash-grid" style="grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-top: 1rem;">
+                <!-- Log Verifier -->
+                <div class="dash-card">
+                    <div class="card-title" style="margin-bottom: 1rem;">LLM Log Verifier</div>
+                    <p style="font-size: 0.9rem; color: #a1a1aa; margin-bottom: 1rem;">Verify if a specific log signature is malicious using our advanced LLM triage engine.</p>
+                    <div class="input-group" style="display: flex; gap: 0.5rem; margin-bottom: 1rem;">
+                        <input type="text" id="verify-log-input" placeholder="Paste log (e.g. DROP TABLE users)" style="flex: 1; padding: 0.5rem; border-radius: 4px; border: 1px solid rgba(255,255,255,0.1); background: rgba(0,0,0,0.3); color: white;">
+                        <button id="verify-log-btn" class="btn btn-primary" style="padding: 0.5rem 1rem;">Verify</button>
+                    </div>
+                    <div id="verify-log-result" style="padding: 0.8rem; border-radius: 4px; background: rgba(0,0,0,0.2); font-size: 0.9rem; min-height: 40px; border: 1px solid rgba(255,255,255,0.05);">Waiting for input...</div>
+                </div>
+
+                <!-- Platform Quiz -->
+                <div class="dash-card">
+                    <div class="card-title" style="margin-bottom: 1rem;">ScropIDS Training Quiz</div>
+                    <p style="font-size: 0.9rem; color: #a1a1aa; margin-bottom: 1rem;">Test your knowledge on how our cloud-native intrusion detection system protects you.</p>
+                    
+                    <div id="quiz-container">
+                        <p id="quiz-question" style="font-weight: 500; margin-bottom: 1rem;">What technology do we use to instantly triage and summarize complex threat vectors?</p>
+                        <div style="display: flex; flex-direction: column; gap: 0.5rem; margin-bottom: 1rem;">
+                            <button class="btn btn-secondary quiz-btn" onclick="checkQuiz(false)" style="text-align: left; background: rgba(255,255,255,0.05); border-color: transparent;">A. Basic Regular Expressions (Regex)</button>
+                            <button class="btn btn-secondary quiz-btn" onclick="checkQuiz(true)" style="text-align: left; background: rgba(255,255,255,0.05); border-color: transparent;">B. LLM-Assisted Triage Engine</button>
+                            <button class="btn btn-secondary quiz-btn" onclick="checkQuiz(false)" style="text-align: left; background: rgba(255,255,255,0.05); border-color: transparent;">C. Manual human review only</button>
+                        </div>
+                        <div id="quiz-result" style="font-size: 0.9rem; font-weight: bold; min-height: 20px;"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
     </main>
 
+    <script>
+        // Log Exporter Logic
+        document.getElementById('exportLogsBtn').addEventListener('click', () => {
+            const table = document.querySelector('.data-table');
+            let csvContent = "data:text/csv;charset=utf-8,";
+            
+            // Get headers
+            const headers = Array.from(table.querySelectorAll('th')).map(th => th.innerText);
+            csvContent += headers.join(",") + "\\n";
+            
+            // Get rows
+            const rows = Array.from(table.querySelectorAll('tbody tr')).map(tr => {
+                return Array.from(tr.querySelectorAll('td')).map(td => td.innerText.replace(/,/g, "")).join(",");
+            });
+            csvContent += rows.join("\\n");
+            
+            // Download as CSV
+            const encodedUri = encodeURI(csvContent);
+            const link = document.createElement("a");
+            link.setAttribute("href", encodedUri);
+            link.setAttribute("download", "scropids_alerts_export.csv");
+            document.body.appendChild(link); // Required for Firefox
+            link.click();
+            document.body.removeChild(link);
+        });
+
+        // Log Verifier Logic
+        document.getElementById('verify-log-btn').addEventListener('click', async () => {
+            const input = document.getElementById('verify-log-input').value;
+            const resultDiv = document.getElementById('verify-log-result');
+            
+            if(!input) {
+                resultDiv.innerHTML = '<span style="color:red">Please enter a log line to analyze.</span>';
+                return;
+            }
+            
+            resultDiv.innerHTML = '<span style="color:#ffbd2e">Analyzing with LLM Engine...</span>';
+            
+            try {
+                const response = await fetch('/api/analyze', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ log: input })
+                });
+                
+                if(response.ok) {
+                    const data = await response.json();
+                    resultDiv.innerHTML = `<strong style="color: ${data.color}">[${data.threat_level}]</strong> ${data.analysis}`;
+                } else {
+                    resultDiv.innerHTML = '<span style="color:red">Analysis failed. Could not reach server.</span>';
+                }
+            } catch (err) {
+                resultDiv.innerHTML = '<span style="color:red">Network error. Is proxy configured properly?</span>';
+            }
+        });
+
+        // Quiz Logic
+        function checkQuiz(isCorrect) {
+            const result = document.getElementById('quiz-result');
+            if(isCorrect) {
+                result.style.color = '#27c93f';
+                result.innerText = '✅ Correct! We utilize advanced Large Language Models to triage threats efficiently.';
+            } else {
+                result.style.color = '#f83600';
+                result.innerText = '❌ Incorrect. Hint: We use modern AI assistance!';
+            }
+        }
+    </script>
 </body>
 </html>
